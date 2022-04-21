@@ -16,8 +16,8 @@ describe("Application", () => {
     jest.setTimeout(100000);
     browser = await puppeteer.launch({
       headless: false,
-      slowMo: 500,
-      devtools: true,
+      slowMo: 10,
+      devtools: false,
       args: [
         '--disable-dev-shm-usage',
         '--disable-extensions',
@@ -68,6 +68,23 @@ describe("Application", () => {
 
     const text2 = await page.$eval(".App-cats-data", (e) => e.textContent);
     expect(text2).toContain(mockResponseObject[0].text);
+  });
+
+  it("test html properties", async () => {
+    await page.goto("http://localhost:3000");
+    const disabledButton = await page.$("#disabled-action");
+    const isDisabled = await disabledButton.getProperty('disabled').then((disabled) => (disabled.jsonValue()));
+    expect(isDisabled).toBe(true);
+
+    const isEnabled = await page.$("#enabled-action:not([disabled])");
+    expect(isEnabled !== null).toBe(true);
+
+    const enabledButton = await page.$("#enabled-action[disabled]");
+    expect(enabledButton === null).toBe(true);
+
+    const hiddenElem = await page.$("#hidden-element");
+    const isHidden = await hiddenElem.getProperty('className').then((className) => (className.jsonValue()));
+    expect(isHidden).toBe('Display-none');
   });
 
   afterAll(() => browser.close());

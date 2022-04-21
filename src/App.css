@@ -40,3 +40,7 @@
 .Nav-list {
   list-style-type: none;
  }
+
+ .Display-none {
+  display: none;
+ }
