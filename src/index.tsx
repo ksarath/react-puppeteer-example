@@ -11,7 +11,7 @@ import LearnReact from './LearnReact';
 import reportWebVitals from './reportWebVitals';
 
 const queryClient = new QueryClient()
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
@@ -21,8 +21,8 @@ root.render(
             renders the first one that matches the current URL. */}
         <Routes>
           <Route path="cats" element={<Cats />} />
-          <Route path="learn-react" element={<LearnReact />}/>
-          <Route path="" element={<Home />}/>
+          <Route path="learn-react" element={<LearnReact />} />
+          <Route path="" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

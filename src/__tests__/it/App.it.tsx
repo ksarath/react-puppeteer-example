@@ -1,8 +1,8 @@
 import puppeteer from "puppeteer";
 
 describe("Application", () => {
-  let browser;
-  let page;
+  let browser: puppeteer.Browser;
+  let page: puppeteer.Page;
 
   const mockResponseObject = [
     {
@@ -59,7 +59,7 @@ describe("Application", () => {
     const text2 = await page.$eval("#gatsby-focus-wrapper", (e) => e.textContent);
     expect(text2).toContain("A JavaScript library for building user interfaces");
   });
-    
+
   it("contains cats data", async () => {
     await page.goto("http://localhost:3000/cats");
     await page.waitForSelector(".App-cats");
@@ -73,7 +73,8 @@ describe("Application", () => {
   it("test html properties", async () => {
     await page.goto("http://localhost:3000");
     const disabledButton = await page.$("#disabled-action");
-    const isDisabled = await disabledButton.getProperty('disabled').then((disabled) => (disabled.jsonValue()));
+    expect(disabledButton !== null).toBe(true);
+    const isDisabled = await disabledButton!.getProperty('disabled').then((disabled) => (disabled.jsonValue()));
     expect(isDisabled).toBe(true);
 
     const isEnabled = await page.$("#enabled-action:not([disabled])");
@@ -83,7 +84,8 @@ describe("Application", () => {
     expect(enabledButton === null).toBe(true);
 
     const hiddenElem = await page.$("#hidden-element");
-    const isHidden = await hiddenElem.getProperty('className').then((className) => (className.jsonValue()));
+    expect(hiddenElem !== null).toBe(true);
+    const isHidden = await hiddenElem!.getProperty('className').then((className) => (className.jsonValue()));
     expect(isHidden).toBe('Display-none');
   });
 
